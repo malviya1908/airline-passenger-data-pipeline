@@ -162,8 +162,8 @@ def main() :
         spark = create_spark_session()
         
         # Load passengers and flight bookings data
-        passengers_df = load_data_from_gcs(spark, "gs://dataproc_bucket_prac/airlines_data/passengers_data/passengers_dirty.csv")
-        airlines_df = load_data_from_gcs(spark, "gs://dataproc_bucket_prac/airlines_data/flight_data/flight_bookings_dirty.csv")
+        passengers_df = load_data_from_gcs(spark, "gs://bucket_path/passengers_dirty.csv")
+        airlines_df = load_data_from_gcs(spark, "gs://bucket_path/flight_bookings_dirty.csv")
         
         ######################################################## Data Cleaning and Transformation ########################################################
         # Drop null values from airlines dataframe
@@ -194,8 +194,8 @@ def main() :
         final_joined_df = join_df(passengers_df, price_df)
         
         #################################################  Writing the final joined df to BigQuery  #############################################
-        bq_table_name = "synthetic-nova-438808-k6.Airlines_dataset.airlines_data"
-        bq_temp_bucket = "gs://dataproc_bucket_prac/airlines_data/bq_temp_folder"
+        bq_table_name = "project_id.dataset_id.airlines_data"
+        bq_temp_bucket = "gs://path_to_temp_folder/bq_temp_folder"
         bq_write = write_to_BigQuery(final_joined_df, bq_table_name, bq_temp_bucket)     
         
     except Exception as e :
